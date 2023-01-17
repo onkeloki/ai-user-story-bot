@@ -6,15 +6,16 @@ import { AppComponent } from './app.component';
 import { UserStoryGeneratorComponent } from './tools/story-generator/user-story-generator/user-story-generator.component';
 import { AppAutowidthDirective } from './shared/app-autowidth.directive';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
-import { DialogComponent } from './tools/story-generator/user-story-generator/dialog/dialog.component';
+
 import { HttpClientModule } from '@angular/common/http';
+import { DialogBubbleComponent } from './tools/story-generator/user-story-generator/dialog-bubble/dialog-bubble.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserStoryGeneratorComponent,
     AppAutowidthDirective,
-    DialogComponent
+    DialogBubbleComponent
   ],
   imports: [
     HttpClientModule,

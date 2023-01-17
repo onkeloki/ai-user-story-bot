@@ -24,7 +24,6 @@
                     ></textarea>
                     <i class="ri-message-2-fill "></i>
                     <span>{{key}}</span>
-
                 </div>
                 <div class="inputBox text-end">
                     <input
@@ -42,16 +41,12 @@
         <ng-container *ngFor="let item of dialog; let i = index">
             <div class="row mb-4 ">
                 <div class="col">
+                    <app-dialog-bubble [item]="item"></app-dialog-bubble>
                     <ng-container *ngIf="!item.buttons">
-
                         <div [class]="item.who">
-
-
                             <span [innerHTML]="item.message"></span>
-
                             <ng-container *ngIf="item.who == 'bot'">
                                 <ng-container *ngIf="loading && i == dialog.length-1">
-
                                     <div class="lds-ellipsis">
                                         <div></div>
                                         <div></div>

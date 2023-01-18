@@ -13,6 +13,7 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
   title = 'denkanfall';
   public timeoutId: any;
   public lastMessageSubFix: string = "";
+  public lastInMessageButtonGroup: USG.InMessageButtonGroup = { buttons: [] };
   public loading = false;
   public lastButtonAction: USG.ButtonAction = "getstory";
   public demoStory: USG.DemoStory = {
@@ -31,6 +32,7 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     //this.send();
     //this.appendButtons();
+    // this.buttonAction("test", "donate")
   }
 
   scrollDown() {
@@ -84,16 +86,28 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
       message: "",
       buttons: this.buttons.buttonsByType(this.lastButtonAction)
     })
+    setTimeout(() => { this.scrollDown() }, 30)
+
   }
 
   buttonAction(btnName: string, action: USG.ButtonAction) {
     this.lastButtonAction = action;
-
     switch (action) {
       case "donate":
         this.dialog.pop();
-        this.appendMsg("me", btnName, "formuliere um: 'wenn du den Entwickler untersützen magst, geht das ganz einfach z.b. via paypal'");
-        this.lastMessageSubFix = "<div><a href='https://www.paypal.com/paypalme/markoluft/1' target='_blank' class='btn btn-primary btn-sm me-2'>1€</a><a  href='https://www.paypal.com/paypalme/markoluft/5' target='_blank' class='btn btn-primary btn-sm me-2'>5€</a><a  href='https://www.paypal.com/paypalme/markoluft/10' target='_blank' class='btn btn-primary btn-sm me-2'>10€</a></div>";
+        this.appendMsg("me", btnName, "formuliere um: 'wenn du den Entwickler untersützen magst, geht das ganz einfach z.b. via paypal' in der Du form");
+        this.lastInMessageButtonGroup = { buttons: this.buttons.donateButtons() }
+        break;
+      case "share":
+        this.dialog.pop();
+        this.appendMsg("me", btnName, "formuliere um: 'Teile dieses Tool mit der Welt, nutze einfach einen der buttons ' in der DU form");
+        this.lastInMessageButtonGroup = { buttons: this.buttons.shareButtons() }
+        break;
+      case "contact":
+        this.dialog.pop();
+        this.appendMsg("me", btnName, "formuliere um: 'hast du anregungen, oder ideen oder willst einfach nur danke sagen dann erreichst du meinen ersteller auf folgende arten' in der DU form");
+        this.lastInMessageButtonGroup = { layout: "full", buttons: this.buttons.contactButtons() }
+
         break;
       case "how":
         this.dialog.pop();
@@ -128,6 +142,8 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
       } else {
         this.appendButtonsByAnswerType();
         target.messageSubFix = this.lastMessageSubFix;
+        target.buttonGroup = this.lastInMessageButtonGroup;
+        this.lastInMessageButtonGroup = { buttons: [] }
         this.lastMessageSubFix = "";
       }
     }

@@ -35,6 +35,42 @@ export class ButtonFactoryService {
     return { name: "💭 Kontakt", action: "contact" }
   }
 
+  public donateButton(p: number): USG.InMessageButton {
+    return { text: p + "€", url: "https://www.paypal.com/paypalme/markoluft/" + p }
+  }
+  public donateButtons(): USG.InMessageButton[] {
+    return [
+      this.donateButton(1),
+      this.donateButton(5),
+      this.donateButton(10)
+    ]
+  }
+
+  public shareButtons(): USG.InMessageButton[] {
+    return [
+      { text: 'LinkedIn', url: "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.denkanfall.de" },
+      { text: 'twitter', url: "https://twitter.com/intent/tweet?text=Denkanfall%20-%20ChatGPT%20based%20UserStory%20generator&url=https%3A%2F%2FDenkanfall.de" }
+
+    ]
+  }
+
+  /*   public likeButtons(): USG.InMessageButton[] {
+      return [
+        { text: 'LinkedIn', url: "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.denkanfall.de" },
+        { text: 'twitter', url: "https://twitter.com/intent/tweet?text=Denkanfall%20-%20ChatGPT%20based%20UserStory%20generator&url=https%3A%2F%2FDenkanfall.de" }
+  
+      ]
+    } */
+
+  public contactButtons(): USG.InMessageButton[] {
+    return [
+      { text: 'Mail Schreiben', url: "mailto:denkanfall@markoluft.de" },
+      { text: 'LinkedIn Profil', url: "https://www.linkedin.com/in/marko-luft-9b4915226/" },
+      { text: '@onkeloki', url: "https://twitter.com/onkeloki" },
+      { text: 'markoluft.de', url: "https://markoluft.de" }
+    ]
+  }
+
 
   public getRandomItem(arr: string[]) {
     const randomIndex = Math.floor(Math.random() * arr.length);
@@ -57,6 +93,14 @@ export class ButtonFactoryService {
       case "donate":
         btns = [this.share(), this.contact(), this.restart()]
         break;
+      case "share":
+        btns = [this.donate(), this.contact(), this.restart()]
+        break;
+      case "contact":
+        btns = [this.donate(), this.share(), this.restart()]
+        break;
+
+
 
       case "like":
         btns = [
@@ -74,8 +118,6 @@ export class ButtonFactoryService {
           this.restart(),
 
         ]
-
-
         break;
       case "restart":
         break;

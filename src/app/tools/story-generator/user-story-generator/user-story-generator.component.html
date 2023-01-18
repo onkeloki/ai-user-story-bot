@@ -54,6 +54,24 @@
                                         <div></div>
                                     </div>
                                 </ng-container>
+
+
+                                <div
+                                    class="row mt-4"
+                                    *ngIf="item.buttonGroup?.buttons"
+                                >
+                                    <div
+                                        class="col"
+                                        [ngClass]="{'col-12 mb-1': item.buttonGroup?.layout == 'full'}"
+                                        *ngFor="let btn of item.buttonGroup?.buttons"
+                                    >
+                                        <a
+                                            class="btn btn-sm btn-primary d-block"
+                                            [href]="btn.url"
+                                            target="_blank"
+                                        >{{btn.text}}</a>
+                                    </div>
+                                </div>
                                 <span [innerHTML]="item.messageSubFix"></span>
                             </ng-container>
                         </div>

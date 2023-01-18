@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { USG } from '../user-story-generator.component';
+import { USG } from '../USG.types';
+
 
 @Component({
   selector: 'app-dialog-bubble',

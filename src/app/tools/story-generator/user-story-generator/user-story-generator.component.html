@@ -28,7 +28,7 @@
                 <div class="inputBox text-end">
                     <input
                         style="margin-left:auto"
-                        (click)="send()"
+                        (click)="requestAStoryBtn()"
                         type="submit"
                         [ngStyle]="{'disabled': this.loading}"
                         value="Formuliere eine Userstory"
@@ -54,6 +54,7 @@
                                         <div></div>
                                     </div>
                                 </ng-container>
+                                <span [innerHTML]="item.messageSubFix"></span>
                             </ng-container>
                         </div>
                     </ng-container>

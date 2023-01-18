@@ -93,7 +93,7 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
       case "donate":
         this.dialog.pop();
         this.appendMsg("me", btnName, "formuliere um: 'wenn du den Entwickler untersützen magst, geht das ganz einfach z.b. via paypal'");
-        this.lastMessageSubFix = "<div><a href='#' class='btn btn-primary btn-sm me-2'>1€</a><a href='#' class='btn btn-primary btn-sm me-2'>5€</a><a href='#' class='btn btn-primary btn-sm me-2'>10€</a></div>";
+        this.lastMessageSubFix = "<div><a href='https://www.paypal.com/paypalme/markoluft/1' target='_blank' class='btn btn-primary btn-sm me-2'>1€</a><a  href='https://www.paypal.com/paypalme/markoluft/5' target='_blank' class='btn btn-primary btn-sm me-2'>5€</a><a  href='https://www.paypal.com/paypalme/markoluft/10' target='_blank' class='btn btn-primary btn-sm me-2'>10€</a></div>";
         break;
       case "how":
         this.dialog.pop();

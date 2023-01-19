@@ -69,7 +69,8 @@
                 <div class="col">
                     <app-dialog-bubble [item]="item"></app-dialog-bubble>
                     <ng-container *ngIf="!item.buttons">
-                        <div [class]="item.who">
+                        <div [ngClass]="{'bot me-4': item.who == 'bot',
+                            'me  ms-4': item.who == 'me'}">
                             <span [innerHTML]="item.message"></span>
                             <ng-container *ngIf="item.who == 'bot'">
                                 <ng-container *ngIf="loading && i == dialog.length-1">

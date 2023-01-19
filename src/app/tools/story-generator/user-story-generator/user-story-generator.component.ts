@@ -98,9 +98,27 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
     this.appendMsg("bot", "")
     this.loading = true;
     let queryParams = new HttpParams().append("msg", msg);
-    this.http.get<USG.BotResponse>('https://api.denkanfall.de/USG/index.php', { params: queryParams }).subscribe((x: USG.BotResponse) => {
-      this.response(x);
+    let send = new FormData();
+    send.append("msg", msg)
+    this.http.post<any>('https://api.denkanfall.de/usg.php', send).subscribe({
+      next: x => {
+        this.response(x);
+      },
+      error: error => {
+
+        console.error('There was an error!', error);
+      }
     })
+
+
+
+
+    /* 
+        this.http.get<USG.BotResponse>('https://api.denkanfall.de/USG/index.php', { params: queryParams }).subscribe((x: USG.BotResponse) => {
+          this.response(x);
+        })
+     */
+
   }
   response(botResponse: USG.BotResponse) {
     this.loading = false;

@@ -13,17 +13,43 @@
                     class="inputBox"
                     *ngFor="let key of demoStory.keys; let i = index"
                 >
-                    <textarea
-                        style="min-height: 48px; resize: none;"
-                        autosize
-                        autocomplete="off"
-                        type="text"
-                        [id]="'textarea_'+i"
-                        required="required"
-                        [value]=""
-                    ></textarea>
-                    <i class="ri-message-2-fill "></i>
-                    <span>{{key}}</span>
+                    <ng-container *ngIf="key.split('|').length == 1">
+                        <textarea
+                            style="min-height: 48px; resize: none;"
+                            autosize
+                            autocomplete="off"
+                            fallback=key
+                            type="text"
+                            [id]="'textarea_'+i"
+                            required="required"
+                            [value]=""
+                        ></textarea>
+                        <i class="ri-message-2-fill "></i>
+                        <span>{{key}}</span>
+                    </ng-container>
+                    <ng-container *ngIf="key.split('|').length > 1">
+
+                        <ng-container *ngFor="let option of key.split('|'); let j = index">
+                            <textarea
+                                class="d-none"
+                                *ngIf="j == 0"
+                                [value]="option"
+                                [id]="'textarea_'+i"
+                            ></textarea>
+
+                            <div
+                                *ngIf="this.viewInited"
+                                class="btn  btn-usg"
+                                [ngClass]="{'active': option == this.getTaValue(i)}"
+                                (click)="setTaValue(i,option)"
+                            >
+                                {{option}}
+
+                            </div>
+                        </ng-container>
+                    </ng-container>
+
+
                 </div>
                 <div class="inputBox text-end">
                     <input

@@ -10,15 +10,16 @@ import { USG } from './USG.types';
   styleUrls: ['./user-story-generator.component.scss']
 })
 export class UserStoryGeneratorComponent implements AfterViewInit {
-  title = 'denkanfall';
+  title = 'yausg';
   public timeoutId: any;
   public lastMessageSubFix: string = "";
   public lastInMessageButtonGroup: USG.InMessageButtonGroup = { buttons: [] };
   public loading = false;
+  public viewInited = false;
   public lastButtonAction: USG.ButtonAction = "getstory";
   public demoStory: USG.DemoStory = {
     prefix: "Als",
-    keys: ["Nutzer", "will ich", "folgendes tun", "dammit ich", "das erreiche"]
+    keys: ["Nutzer", "will ich|brauche ich|wünsche ich mir", "folgendes tun", "damit|so dass|weil", "ich das erreiche"]
   }
   public dialog: USG.DialogItem[] = [];
   public placeholders: string[] = [];
@@ -30,6 +31,8 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
   constructor(public http: HttpClient, public buttons: ButtonFactoryService) {
   }
   ngAfterViewInit(): void {
+
+    this.viewInited = true;
     //this.send();
     //this.appendButtons();
     // this.buttonAction("test", "donate")
@@ -51,14 +54,42 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
     this.scrollDown();
   }
 
-  requestAStoryBtn() {
+  getFraseFromForm() {
     var coll = document.getElementsByTagName("textarea");
     var textareas = Array.prototype.slice.call(coll, 0);
     let frase = "";
+    let taIndex = 0;
     textareas.forEach((t) => {
-      frase += t.value + " ";
+      let fallback = this.demoStory.keys[taIndex];
+      let userInput = t.value.trim()
+      let finalValue = "";
+      if (userInput == "") {
+        finalValue = fallback;
+      } else {
+        finalValue = userInput
+      }
+      frase += finalValue + " ";
+      taIndex++;
     })
-    let msg = "Formuliere eine Userstory:<br> " + this.demoStory.prefix + " " + frase;
+    return this.demoStory.prefix + " " + frase;
+  }
+  setTaValue(i: number, value: string) {
+    (document.getElementById("textarea_" + i) as HTMLTextAreaElement).value = value;
+  }
+  getTaValue(i: number): string {
+    let ta = (document.getElementById("textarea_" + i) as HTMLTextAreaElement);
+    if (ta) {
+      return ta.value;
+    }
+    return "";
+
+  }
+  requestAStoryBtn() {
+
+
+    let frase = this.getFraseFromForm();
+    console.log(frase);
+    let msg = "Formuliere eine Userstory:<br> " + " " + frase;
     this.appendMsg("me", msg, msg);
     this.lastButtonAction = "getstory"
   }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslationService } from 'src/app/shared/translation.service';
 import { USG } from './USG.types';
 
 
@@ -6,33 +7,38 @@ import { USG } from './USG.types';
   providedIn: 'root'
 })
 export class ButtonFactoryService {
-  constructor() { }
+  constructor(public _: TranslationService) { }
   public how(): USG.Button {
-    let txts = ["🧐 wie können wir das erreichen", "⁉️ erzähle mir mehr"];
+    let txts = this._.get().BTNS_HOW;
     return { name: this.getRandomItem(txts), action: "how" }
   }
   public repeatLlast(): USG.Button {
-    let txts = ["👎 probiere es nochmal", "👎 das passt noch nicht ganz"];
+    let txts = this._.get().BTNS_REPEAT_LAST;
     return { name: this.getRandomItem(txts), action: "repeat-last" }
   }
   public restart(): USG.Button {
-    let txts = ["🔁 von vorne starten", "🔁 Nonch einmal neu", "🔁 neu starten"];
+    let txts = this._.get().BTNS_RESTART;
     return { name: this.getRandomItem(txts), action: "restart" }
   }
   public donate(): USG.Button {
-    return { name: "☕️ Donate ", action: "donate" }
+    let txts = this._.get().BTNS_DONATE;
+    return { name: this.getRandomItem(txts), action: "donate" }
   }
 
 
   public like(): USG.Button {
-    let txts = ["❤️ Mag Ich", "👍 Gefällt mir", "😎 sehr cool", "🤘 rock on"];
+    let txts = this._.get().BTNS_LIKE;
     return { name: this.getRandomItem(txts), action: "like" }
   }
+
   public share(): USG.Button {
-    return { name: "📣 Teilen", action: "share" }
+    let txts = this._.get().BTNS_SHARE;
+    return { name: this.getRandomItem(txts), action: "share" }
   }
+
   public contact(): USG.Button {
-    return { name: "💭 Kontakt", action: "contact" }
+    let txts = this._.get().BTNS_CONTACT;;
+    return { name: this.getRandomItem(txts), action: "contact" }
   }
 
   public donateButton(p: number): USG.InMessageButton {
@@ -48,8 +54,8 @@ export class ButtonFactoryService {
 
   public shareButtons(): USG.InMessageButton[] {
     return [
-      { text: 'LinkedIn', url: "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.denkanfall.de" },
-      { text: 'twitter', url: "https://twitter.com/intent/tweet?text=Denkanfall%20-%20ChatGPT%20based%20UserStory%20generator&url=https%3A%2F%2FDenkanfall.de" }
+      { text: 'LinkedIn', url: "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fyausg.com" },
+      { text: 'twitter', url: "https://twitter.com/intent/tweet?text=yausg%20-%20ChatGPT%20based%20UserStory%20generator&url=https%3A%2F%2Fyausg.com" }
 
     ]
   }
@@ -64,8 +70,8 @@ export class ButtonFactoryService {
 
   public contactButtons(): USG.InMessageButton[] {
     return [
-      { text: 'Mail Schreiben', url: "mailto:denkanfall@markoluft.de" },
-      { text: 'LinkedIn Profil', url: "https://www.linkedin.com/in/marko-luft-9b4915226/" },
+      { text: this._.get().BTN_TXT_MAIL, url: "mailto:denkanfall@markoluft.de" },
+      { text: this._.get().BTN_TXT_LINKEDIN, url: "https://www.linkedin.com/in/marko-luft-9b4915226/" },
       { text: '@onkeloki', url: "https://twitter.com/onkeloki" },
       { text: 'markoluft.de', url: "https://markoluft.de" }
     ]

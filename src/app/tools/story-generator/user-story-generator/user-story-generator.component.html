@@ -1,3 +1,34 @@
+<nav
+    class="bd-subnavbar py-2 fixed-top"
+    style="background-color: #213344;"
+>
+    <div
+        class="container"
+        style="max-width: 550px;"
+    >
+        <div class="row">
+
+            <div class="col">
+                <h5 style="color:#fff">
+                    <span class="hl">y</span>et <span class="hl">a</span>nother <span class="hl">u</span>ser
+                    <span class="hl">s</span>tory <span class="hl">g</span>enerator
+                </h5>
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<div
+    class="btn"
+    (click)="_.setDE()"
+>DE</div>
+<div
+    class="btn"
+    (click)="_.setEN()"
+>EN</div>
 <div
     class="container mt-4 mb-4 pb-4 "
     style="max-width: 550px;"
@@ -8,17 +39,37 @@
                 class="generatorform "
                 [ngClass]="{'out': dialog.length > 0}"
             >
-                <h2>{{demoStory.prefix}}</h2>
+                <div class="row">
+                    <div class="col">
+                        <h2>{{_.get().STORY.prefix}}</h2>
+                    </div>
+
+
+                    <div class="col-auto">
+                        <div class="col-auto">
+                            <span
+                                class="lang  p-2"
+                                [ngClass]="{'active': _.get().LANG_KEY =='de'}"
+                                (click)="_.setDE();resetUSGButtons()"
+                            >DE</span>
+                            <span
+                                class="lang p-2"
+                                [ngClass]="{'active': _.get().LANG_KEY =='en'}"
+                                (click)="_.setEN();resetUSGButtons()"
+                            >EN</span>
+                        </div>
+                    </div>
+                </div>
                 <div
                     class="inputBox"
-                    *ngFor="let key of demoStory.keys; let i = index"
+                    *ngFor="let key of _.get().STORY.keys; let i = index"
                 >
+
                     <ng-container *ngIf="key.split('|').length == 1">
                         <textarea
                             style="min-height: 48px; resize: none;"
                             autosize
                             autocomplete="off"
-                            fallback=key
                             type="text"
                             [id]="'textarea_'+i"
                             required="required"
@@ -28,7 +79,6 @@
                         <span>{{key}}</span>
                     </ng-container>
                     <ng-container *ngIf="key.split('|').length > 1">
-
                         <ng-container *ngFor="let option of key.split('|'); let j = index">
                             <textarea
                                 class="d-none"
@@ -36,28 +86,22 @@
                                 [value]="option"
                                 [id]="'textarea_'+i"
                             ></textarea>
-
                             <div
-                                *ngIf="this.viewInited"
                                 class="btn  btn-usg"
-                                [ngClass]="{'active': option == this.getTaValue(i)}"
-                                (click)="setTaValue(i,option)"
-                            >
-                                {{option}}
-
-                            </div>
+                                [id]="'btn-usg_'+i+'_'+j"
+                                (click)="usgButtonClick(i,j,option)"
+                            >{{option}}</div>
                         </ng-container>
                     </ng-container>
-
-
                 </div>
+
                 <div class="inputBox text-end">
                     <input
                         style="margin-left:auto"
                         (click)="requestAStoryBtn()"
                         type="submit"
                         [ngStyle]="{'disabled': this.loading}"
-                        value="Formuliere eine Userstory"
+                        [value]="_.get().SEND_BTN"
                     >
                 </div>
             </div>

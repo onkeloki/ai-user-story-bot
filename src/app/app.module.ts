@@ -7,8 +7,11 @@ import { UserStoryGeneratorComponent } from './tools/story-generator/user-story-
 import { AppAutowidthDirective } from './shared/app-autowidth.directive';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DialogBubbleComponent } from './tools/story-generator/user-story-generator/dialog-bubble/dialog-bubble.component';
+import { TranslationService } from './shared/translation.service';
+// AoT requires an exported function for factories
+
 
 @NgModule({
   declarations: [
@@ -18,10 +21,12 @@ import { DialogBubbleComponent } from './tools/story-generator/user-story-genera
     DialogBubbleComponent
   ],
   imports: [
+
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     TextareaAutosizeModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

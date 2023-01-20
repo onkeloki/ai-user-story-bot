@@ -1,26 +1,26 @@
 
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TRANSLATIONS } from '@angular/core';
 import { ButtonFactoryService } from './button-factory.service';
+
 import { USG } from './USG.types';
+
+import { TranslationService } from 'src/app/shared/translation.service';
 @Component({
   selector: 'app-user-story-generator',
   templateUrl: './user-story-generator.component.html',
   styleUrls: ['./user-story-generator.component.scss']
 })
 export class UserStoryGeneratorComponent implements AfterViewInit {
-  title = 'yausg';
+  title = '>yausg - yet another userstory generator - made with ❤️ and ChatGT';
   public timeoutId: any;
   public lastMessageSubFix: string = "";
   public lastInMessageButtonGroup: USG.InMessageButtonGroup = { buttons: [] };
   public loading = false;
   public viewInited = false;
   public lastButtonAction: USG.ButtonAction = "getstory";
-  public demoStory: USG.DemoStory = {
-    prefix: "Als",
-    keys: ["Nutzer", "will ich|brauche ich|wünsche ich mir", "folgendes tun", "damit|so dass|weil", "ich das erreiche"]
-  }
+
   public dialog: USG.DialogItem[] = [];
   public placeholders: string[] = [];
   /**
@@ -28,16 +28,29 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
    * @param http 
    * @param buttons 
    */
-  constructor(public http: HttpClient, public buttons: ButtonFactoryService) {
+  constructor(public http: HttpClient, public buttons: ButtonFactoryService, public _: TranslationService) {
+
+
+
   }
+
   ngAfterViewInit(): void {
-
-    this.viewInited = true;
-    //this.send();
-    //this.appendButtons();
-    // this.buttonAction("test", "donate")
+    this.resetUSGButtons()
   }
 
+  resetUSGButtons() {
+    setTimeout(() => {
+      document.querySelectorAll(".btn-usg").forEach((e) => {
+        console.log(e);
+        if (e.id.endsWith("_0")) {
+          console.log("da isser" + e.id)
+          e.classList.add("active")
+        }
+      })
+    }, 100);
+
+
+  }
   scrollDown() {
     window.scrollTo(0, document.body.scrollHeight);
   }
@@ -53,14 +66,25 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
     }
     this.scrollDown();
   }
+  usgButtonClick(ta: number, i: number, option: string) {
+    document.querySelectorAll(".btn-usg").forEach((e) => {
+      if (e.id.startsWith("btn-usg_" + ta + "_")) {
+        console.log(e.id)
+        e.classList.remove("active")
+      }
+    })
+    document.querySelector("#btn-usg_" + ta + "_" + i)?.classList.add("active")
+    this.setTaValue(ta, i, option)
+  }
 
   getFraseFromForm() {
+
     var coll = document.getElementsByTagName("textarea");
     var textareas = Array.prototype.slice.call(coll, 0);
     let frase = "";
     let taIndex = 0;
     textareas.forEach((t) => {
-      let fallback = this.demoStory.keys[taIndex];
+      let fallback = this._.get().STORY.keys[taIndex];
       let userInput = t.value.trim()
       let finalValue = "";
       if (userInput == "") {
@@ -71,10 +95,10 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
       frase += finalValue + " ";
       taIndex++;
     })
-    return this.demoStory.prefix + " " + frase;
+    return this._.get().STORY.prefix + " " + frase;
   }
-  setTaValue(i: number, value: string) {
-    (document.getElementById("textarea_" + i) as HTMLTextAreaElement).value = value;
+  setTaValue(taId: number, btnId: number, value: string) {
+    (document.getElementById("textarea_" + taId) as HTMLTextAreaElement).value = value;
   }
   getTaValue(i: number): string {
     let ta = (document.getElementById("textarea_" + i) as HTMLTextAreaElement);
@@ -88,8 +112,8 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
 
 
     let frase = this.getFraseFromForm();
-    console.log(frase);
-    let msg = "Formuliere eine Userstory:<br> " + " " + frase;
+
+    let msg = this._.get().PRE_FRASE_TXT + ":<br> " + " " + frase;
     this.appendMsg("me", msg, msg);
     this.lastButtonAction = "getstory"
   }
@@ -144,23 +168,23 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
     switch (action) {
       case "donate":
         this.dialog.pop();
-        this.appendMsg("me", btnName, "formuliere um: 'wenn du den Entwickler untersützen magst, geht das ganz einfach z.b. via paypal' in der Du form");
+        this.appendMsg("me", btnName, this._.get().TXT_DONATE);
         this.lastInMessageButtonGroup = { buttons: this.buttons.donateButtons() }
         break;
       case "share":
         this.dialog.pop();
-        this.appendMsg("me", btnName, "formuliere um: 'Teile dieses Tool mit der Welt, nutze einfach einen der buttons ' in der DU form");
+        this.appendMsg("me", btnName, this._.get().TXT_SHARE);
         this.lastInMessageButtonGroup = { buttons: this.buttons.shareButtons() }
         break;
       case "contact":
         this.dialog.pop();
-        this.appendMsg("me", btnName, "formuliere um: 'hast du anregungen, oder ideen oder willst einfach nur danke sagen dann erreichst du meinen ersteller auf folgende arten' in der DU form");
+        this.appendMsg("me", btnName, this._.get().TXT_CONTACT);
         this.lastInMessageButtonGroup = { layout: "full", buttons: this.buttons.contactButtons() }
 
         break;
       case "how":
         this.dialog.pop();
-        let serverMsg = "wie kann ich das erreichen?: " + this.getLastDialogItem().message
+        let serverMsg = this._.get().TXT_HOW + "" + this.getLastDialogItem().message
         this.appendMsg("me", btnName, serverMsg);
         break;
       case "repeat-last":
@@ -172,7 +196,7 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
         break;
       case "like":
         this.dialog.pop();
-        this.appendMsg("me", btnName, "schreibe eine chat nachricht, die darran erinnern soll, dass man den entwickler dieser seite unterstützen kann z.b. mit einer kleinen spende um die kosten des services zu decken. Du kannst aber auch über den bot berichten oder einfach dem entwickler deine danksagung mailen");
+        this.appendMsg("me", btnName, this._.get().TXT_LIKE);
         break;
     }
   }

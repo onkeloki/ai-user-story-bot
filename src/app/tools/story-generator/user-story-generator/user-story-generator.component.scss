@@ -1,3 +1,13 @@
+
+.hl {
+  color:#00dfc4;
+}
+.lang { color:#fff; cursor: pointer;}
+.lang.active { text-decoration: underline;}
+.fixed-top{
+  box-shadow: -5px -5px 15px rgba(255,255,255,0.1), 5px 5px 15px rgba(0,0,0,0.35);
+          
+}
 .generatorform {
   animation: bounceInDown;
   animation-duration: 1s;

@@ -113,7 +113,7 @@ export class UserStoryGeneratorComponent implements AfterViewInit {
 
     let frase = this.getFraseFromForm();
 
-    let msg = this._.get().PRE_FRASE_TXT + ":<br> " + " " + frase;
+    let msg = this._.get().PRE_FRASE_TXT + ":<br> " + " " + frase + ".";
     this.appendMsg("me", msg, msg);
     this.lastButtonAction = "getstory"
   }
